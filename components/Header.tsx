@@ -4,8 +4,9 @@ import Link from "next/link";
 
 import palette from "../styles/palette";
 import { useState } from 'react';
-import ModalPortal from "./MordalPortal";
+//import ModalPortal from "./MordalPortal";
 import SignUpModal from "./auth/SignUpModal";
+import useModal from "../hooks/useModal";
 
 const Container = styled.div`
   position: sticky;
@@ -138,8 +139,8 @@ const Container = styled.div`
 
 const Header: React.FC = () => {
 
-    //* 모달을 열고 닫을 boolean 값
-    const [modalOpend, setModalOpend] = useState(false);
+  //* 모달을 열고 닫을 boolean 값
+  const { openModal, ModalPortal} = useModal();
 
   return (
     <Container>
@@ -151,7 +152,7 @@ const Header: React.FC = () => {
         <button 
             type="button" 
             className="header-sign-up-button"
-            onClick={()=>setModalOpend(true)}
+            onClick={openModal}
         >
             회원가입
         </button>
@@ -159,11 +160,10 @@ const Header: React.FC = () => {
             로그인
         </button>
       </div>
-      {modalOpend && (
-        <ModalPortal closePortal={()=>setModalOpend(false)}>
+        <ModalPortal>
             <SignUpModal/>
         </ModalPortal>
-      )}
+
     </Container>
   );
 };
