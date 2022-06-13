@@ -7,8 +7,11 @@ import { useState } from 'react';
 //import ModalPortal from "./MordalPortal";
 import SignUpModal from "./auth/SignUpModal";
 import useModal from "../hooks/useModal";
-import { useSelector } from "react-redux";
+import { useSelector } from "../store";
 import HambergerIcon from "../public/static/svg/header/hamburger.svg";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/auth";
+import AuthModal from "./auth/AuthModal";
 
 const Container = styled.div`
   position: sticky;
@@ -167,7 +170,7 @@ const Header: React.FC = () => {
   const { openModal, ModalPortal, closeModal} = useModal();
 
   const user = useSelector((state:any) => state.user);
-
+  const dispatch = useDispatch();
   
   return (
     <Container>
@@ -180,11 +183,20 @@ const Header: React.FC = () => {
           <button 
               type="button" 
               className="header-sign-up-button"
-              onClick={openModal}
+              onClick={() => {
+                dispatch(authActions.setAuthMode("signup"));
+                openModal();
+              }}
           >
               회원가입
           </button>
-          <button type="button" className="header-login-button">
+          <button 
+              type="button" 
+              className="header-login-button"
+              onClick={()=> {
+                dispatch(authActions.setAuthMode("login"));
+                openModal();
+              }}>
               로그인
           </button>
         </div>
@@ -200,7 +212,7 @@ const Header: React.FC = () => {
       )}
         
         <ModalPortal>
-            <SignUpModal closeModal={closeModal}/>
+            <AuthModal closeModal={closeModal}/>
         </ModalPortal>
 
     </Container>
