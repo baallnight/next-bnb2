@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 
 import palette from "../styles/palette";
-import { useState } from 'react';
 //import ModalPortal from "./MordalPortal";
 import SignUpModal from "./auth/SignUpModal";
 import useModal from "../hooks/useModal";
 import { useSelector } from "../store";
-import HambergerIcon from "../public/static/svg/header/hamburger.svg";
+import HamburgerIcon from "../public/static/svg/header/hamburger.svg";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/auth";
 import AuthModal from "./auth/AuthModal";
+import OutsideClickHandler from "react-outside-click-handler";
+import { logoutAPI } from "../lib/api/auth";
+import { userActions } from "../store/user";
+import HeaderAuths from "./HeaderAuths";
+import HeaderUserProfile from "./HeaderUserProfile";
 
 const Container = styled.div`
   position: sticky;
@@ -162,15 +166,38 @@ const Container = styled.div`
       border-radius: 50%;
     }
   }
+
+  .header-usermenu {
+    position: absolute;
+    right: 0;
+    top: 52px;
+    width: 240px;
+    padding: 8px 0;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+    border-radius: 8px;
+    background-color: white;
+    li {
+      display: flex;
+      align_items: center;
+      width: 100%;
+      height: 42px;
+      padding: 0 16px;
+      cursor: pointer;
+      &:hover {
+        background-color: ${palette.gray_f7};
+      }
+    }
+    .header-usermenu-divider {
+      width: 100%;
+      height: 1px;
+      margin: 8px 0;
+      background-color: ${palette.gray_dd};
+    }
+  }
 `;
 
 const Header: React.FC = () => {
-
-  //* 모달을 열고 닫을 boolean 값
-  const { openModal, ModalPortal, closeModal} = useModal();
-
-  const user = useSelector((state:any) => state.user);
-  const dispatch = useDispatch();
+  const isLogged = useSelector((state) => state.user.isLogged);
   
   return (
     <Container>
@@ -178,43 +205,8 @@ const Header: React.FC = () => {
         <a className="header-logo-wrapper">
         </a>
       </Link>
-      {!user.isLogged && (
-        <div className="header-auth-buttons">
-          <button 
-              type="button" 
-              className="header-sign-up-button"
-              onClick={() => {
-                dispatch(authActions.setAuthMode("signup"));
-                openModal();
-              }}
-          >
-              회원가입
-          </button>
-          <button 
-              type="button" 
-              className="header-login-button"
-              onClick={()=> {
-                dispatch(authActions.setAuthMode("login"));
-                openModal();
-              }}>
-              로그인
-          </button>
-        </div>
-      )}
-      {user.isLogged && (
-        <button className="header-user-profile" type="button">
-          <HambergerIcon/>
-          <img
-            src={user.profileImage}
-            className="header-user-profile-image"
-            alt=""/>
-        </button>
-      )}
-        
-        <ModalPortal>
-            <AuthModal closeModal={closeModal}/>
-        </ModalPortal>
-
+      {!isLogged && <HeaderAuths/>}
+      {isLogged && <HeaderUserProfile/>}
     </Container>
   );
 };

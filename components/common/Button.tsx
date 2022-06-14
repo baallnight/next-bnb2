@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import palette from "../../styles/palette";
+import React from "react";
 
 const Container = styled.button`
     width: 100%;
@@ -22,4 +23,4 @@ const Button: React.FC<IProps> = ({children, ...props }) => {
     return <Container {...props}>{children}</Container>
 };
 
-export default Button;
+export default React.memo(Button);
