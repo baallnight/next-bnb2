@@ -34,6 +34,9 @@ const reducer = (state: any, action: any) => {
 };
 
 //* 타입 지원되는 커스텀 useSelector 만들기
+declare module 'react-redux' {
+  interface DefaultRootState extends RootState {}
+}
 export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 
 const initStore: MakeStore<any> = () => {

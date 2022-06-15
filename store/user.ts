@@ -6,7 +6,6 @@ import { UserState } from "../types/reduxState";
 const initialState: UserState = {
     id: 0,
     email: "",
-    password: "",
     lastname: "",
     firstname: "",
     birthday: "",

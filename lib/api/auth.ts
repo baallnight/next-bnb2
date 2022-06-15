@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from ".";
 import { UserType } from "../../types/user";
 
 //* 회원가입 body
@@ -16,6 +16,6 @@ export const signupAPI = (body: SignUpAPIBody) =>
 export const loginAPI = (body: {email: string; password: string}) =>
     axios.post<UserType>("/api/auth/login", body);
 
-export const meAPI = () => axios.get<UserType>("/api/auth/me");
+export const meAPI = () => axios.get("/api/auth/me");
 
 export const logoutAPI = () => axios.delete("/api/auth/logout");

@@ -4,15 +4,19 @@ import Data from "../../../lib/data";
 import { StoredUserType } from "../../../types/user";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+
   if (req.method === "GET") {
     try {
       const accessToken = req.headers.cookie;
+      console.log("token : ", accessToken);
       if (!accessToken) {
         res.statusCode = 400;
         return res.send("access_token이 없습니다.");
       }
       const userId = jwt.verify(accessToken, process.env.JWT_SECRET!);
-
+      console.log(userId);
+      res.end();
+      /*
       const user = Data.user.find({ id: Number(userId) });
       if (!user) {
         res.statusCode = 404;
@@ -27,6 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       delete userWithoutPassword.password;
       res.statusCode = 200;
       return res.send(userWithoutPassword);
+      */
     } catch (e) {
       console.log(e);
       res.statusCode = 500;
